@@ -75,7 +75,7 @@ public class ReservationService {
       if (userDao.findByUsername(username).isEmpty()){
          throw new UserNotFoundException("No se encontro el usuario" + username);
         }
-      List<Reservation> reservas = reservations.stream().filter(r -> r.getOwner().equals(username)).sorted( (r1,r2) -> Double.compare(r2.calculatePrice(), r1.calculatePrice())).toList();
+      List<Reservation> reservas = reservations.stream().filter(r -> r.getOwner().getUsername().equals(username)).sorted( (r1,r2) -> Double.compare(r2.calculatePrice(), r1.calculatePrice())).toList();
       return reservas;      
     //throw new UnsupportedOperationException("Ejercicio 1: implement getReservationsByUser");
   }
