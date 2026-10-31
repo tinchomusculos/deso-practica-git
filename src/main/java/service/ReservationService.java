@@ -23,8 +23,6 @@ import java.time.Instant;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Stream;
-import java.util.Comparator;
 
 public class ReservationService {
   private final ReservationDao reservationDao;
@@ -76,7 +74,7 @@ public class ReservationService {
       if (userDao.findByUsername(username).isEmpty()){
          throw new UserNotFoundException("No se encontro el usuario" + username);
         }
-      List<Reservation> reservas = reservations.stream().filter(r -> r.getOwner().equals(username)).sorted( (r1,r2) -> Double.compare(r2.calculatePrice(), r1.calculatePrice())).toList();
+      List<Reservation> reservas = reservations.stream().filter(r -> r.getOwner().getUsername().equals(username)).sorted( (r1,r2) -> Double.compare(r2.calculatePrice(), r1.calculatePrice())).toList();
       return reservas;      
     //throw new UnsupportedOperationException("Ejercicio 1: implement getReservationsByUser");
   }
