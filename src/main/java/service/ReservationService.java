@@ -1,5 +1,10 @@
 package service;
 
+import domain.Accommodation;
+import domain.Flight;
+import domain.Location;
+import java.util.stream.Collectors;
+
 import domain.Reservation;
 import domain.TouristService;
 import domain.User;
@@ -101,7 +106,27 @@ public class ReservationService {
 
   // Ejercicio 5
   public Map<String, List<Reservation>> groupReservationsByCountry(List<Reservation> reservations) {
-    throw new UnsupportedOperationException("Ejercicio 5: implement groupReservationsByCountry");
+    if (reservations == null) {
+      return Map.of();
+    }
+
+    return reservations.stream()
+        .filter(r -> getCountry(r) != null)
+        .sorted(Comparator.comparing(Reservation::getDate))
+        .collect(Collectors.groupingBy(this::getCountry));
+  }
+
+  private String getCountry(Reservation reservation) {
+    if (reservation == null || reservation.getService() == null) {
+      return null;
+    }
+    Location location = null;
+    if (reservation.getService() instanceof Accommodation accommodation) {
+      location = accommodation.getLocation();
+    } else if (reservation.getService() instanceof Flight flight) {
+      location = flight.getArrivalInfo();
+    }
+    return (location != null) ? location.getCountry() : null;
   }
 
   // Ejercicio 7
